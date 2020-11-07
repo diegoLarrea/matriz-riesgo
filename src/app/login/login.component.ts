@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthAPI } from '../_services/auth';
 
 @Component({
@@ -9,7 +10,7 @@ import { AuthAPI } from '../_services/auth';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private apiAuth: AuthAPI, private router: Router) { }
+  constructor(private apiAuth: AuthAPI, private router: Router, private toast: ToastrService) { }
 
   key = {
     usuario: null,
@@ -37,12 +38,12 @@ export class LoginComponent implements OnInit {
             )
           }else{
             this.loading = false;
-            // this.toastr.info("Usuario y/o contraseña incorrecta/s");
+            this.toast.info("Usuario y/o contraseña incorrecta/s");
           }
         }
       )
     }else{
-      // this.toastr.info("Complete los campos requeridos");
+      this.toast.info("Complete los campos requeridos");
     }
     
   }

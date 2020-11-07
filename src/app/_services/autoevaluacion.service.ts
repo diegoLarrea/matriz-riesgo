@@ -11,7 +11,7 @@ export class AutoevaluacionAPI {
   constructor(private http: HttpClient) { }
 
   get(params):Observable<any>{
-      
+    console.log(params)
     const perPage = params.can;
     let offset = params.page * perPage - perPage;
     let httpParams = new HttpParams();
@@ -22,14 +22,13 @@ export class AutoevaluacionAPI {
     httpParams = httpParams.append("by", params.by.toString());
     httpParams = httpParams.append("order", params.dir.toString());
 
-    let filters = "";
-    let parametros = {};
-
-    if(filters != ""){
+    if(params.filters?.buscar != null){
+      let value = params.filters.buscar;
+      let filters = `id like '%${value}%' OR usuario like '%${value}%' OR fecha_creacion like '%${value}%' OR macroProceso like '%${value}%' OR proceso like '%${value}%' OR riesgo like '%${value}%' OR implicacionRiesgo like '%${value}%' OR probabilidadOcurrencia like '%${value}%' OR impacto like '%${value}%' OR  descripcion like '%${value}%' OR  mejora like '%${value}%' OR  camposPersonalizados like '%${value}%'`;
       httpParams = httpParams.append("whereX", filters);
     }
   
-    return this.http.get(`${Host.HOST}/v_legajo_rrhh/listar`, {params: httpParams});
+    return this.http.get(`${Host.HOST}/autoevaluacion_procesos/listar`, {params: httpParams});
   }
 
   post(autoevaluacion: any):Observable<any> {

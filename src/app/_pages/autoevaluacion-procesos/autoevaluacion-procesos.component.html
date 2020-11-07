@@ -1,115 +1,74 @@
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <button data-toggle="modal" data-target="#modalAgregar" type="button" class="btn btn-primary mb-3 mr-2">
-                <i class="fas fa-plus mr-2"></i>AGREGAR
+<div class="row">
+    <div class="col-12">
+        <button data-toggle="modal" data-target="#modalAgregar" type="button" class="btn btn-primary mb-3 mr-2">
+            <i class="fas fa-plus mr-2"></i>AGREGAR
+        </button>
+        <div class="dropdown d-inline-block" style="vertical-align: top;">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="btn-exportar"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-file-excel mr-2"></i>EXPORTAR
             </button>
-            <div class="dropdown d-inline-block" style="vertical-align: top;">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="btn-exportar"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-file-excel mr-2"></i>EXPORTAR
-                </button>
-                <div class="dropdown-menu" aria-labelledby="btn-exportar">
-                    <a class="dropdown-item" href="#">Total</a>
-                    <a class="dropdown-item" href="#">Parcial</a>
-                </div>
+            <div class="dropdown-menu" aria-labelledby="btn-exportar">
+                <a class="dropdown-item">Total</a>
+                <a class="dropdown-item" href="#">Parcial</a>
             </div>
         </div>
-        <div class="col-12">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar..."
-                    aria-describedby="btn-buscar">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button" id="btn-buscar"><i
-                            class="fas fa-search mr-2"></i>BUSCAR</button>
-                </div>
+    </div>
+    <div class="col-12">
+        <div class="input-group mb-3">
+            <input [(ngModel)]="filtros.buscar" type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar..."
+                aria-describedby="btn-buscar">
+            <div class="input-group-append" id="btn-buscar">
+                <button (click)="get(1)" class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                <button (click)="limpiarFiltros()" class="btn btn-outline-secondary" type="button" id="btn-buscar"><i
+                        class="fas fa-eraser"></i></button>
             </div>
         </div>
-        <div class="col-12">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th class="min" scope="col">#</th>
-                            <th class="min" scope="col">First</th>
-                            <th class="min" scope="col">Last</th>
-                            <th class="min" scope="col">Handle</th>
-                            <th class="min" scope="col">First</th>
-                            <th class="min" scope="col">Last</th>
-                            <th class="min" scope="col">Handle</th>
-                            <th class="min" scope="col">First</th>
-                            <th class="min" scope="col">Last</th>
-                            <th class="min" scope="col">Handle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th class="min" scope="row">1</th>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                        </tr>
-                        <tr>
-                            <th class="min" scope="row">2</th>
-                            <td class="min">Jacob</td>
-                            <td class="min">Thornton</td>
-                            <td class="min">@fat</td>
-                            <td class="min">Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                        </tr>
-                        <tr>
-                            <th class="min" scope="row">3</th>
-                            <td class="min">Larry</td>
-                            <td class="min">the Bird</td>
-                            <td class="min">@twitter</td>
-                            <td class="min">Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    </div>
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th *ngFor="let i of tableManager.headers; index as j" class="min"
+                            (click)="sort(i.sortable, j)" [class.text-center]="i.center" [class.cp]="i.sortable">
+                            <span class="platform-light text-primary">{{i.columnName}}</span>
+                            <span class="ml-2">
+                                <i *ngIf="i.sortable" class="fas fa-long-arrow-alt-up {{i.sort && i.dir=='ASC'?'text-primary':'text-gris'}}"></i>
+                                <i *ngIf="i.sortable" class="fas fa-long-arrow-alt-down {{i.sort && i.dir=='DESC'?'text-primary':'text-gris'}}"></i>
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let i of datos | paginate: { id: 'server', itemsPerPage: tableManager.params.can, currentPage: p, totalItems:total }; index as j;">
+                        <td class="min text-center">{{i.id != null? i.id: "NR"}}</td>
+                        <td class="min">{{i.fecha_creacion != null? i.fecha_creacion: "NR"}}</td>
+                        <td class="min">{{i.usuario != null? i.usuario: "NR"}}</td>
+                        <td class="min">{{i.macroProceso != null? i.macroProceso: "NR"}}</td>
+                        <td class="min">{{i.proceso != null? i.proceso: "NR"}}</td>
+                        <td class="min">{{i.riesgo != null? i.riesgo: "NR"}}</td>
+                        <td class="min">{{i.implicacionRiesgo != null? i.implicacionRiesgo: "NR"}}</td>
+                        <td class="min">{{i.probabilidadOcurrencia != null? i.probabilidadOcurrencia: "NR"}}</td>
+                        <td class="min">{{i.impacto != null? i.impacto: "NR"}}</td>
+                        <td class="min">{{i.descripcion != null? i.descripcion: "NR"}}</td>
+                        <td class="min">{{i.recomendacion != null? i.recomendacion: "NR"}}</td>
+                        <td class="min">{{i.usuario != null? i.usuario: "NR"}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="col-12">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
-        </div>
-<!--         <div class="col-2">
-            <div class="input-group">
-                <select class="custom-select">
-                  <option selected>10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-            </div>
-        </div> -->
+        <p class="text-center text-black-50" *ngIf="datos.length == 0 && !loading">No se encontraron resultados
+        </p>
+        <pagination-controls class="my-pagination text-center" id="server" (pageChange)="get($event)"
+            maxSize="10" previousLabel="" nextLabel="">
+        </pagination-controls>
     </div>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalAgregarLabel">Agregar Autoevaluación de Procesos</h5>
@@ -121,8 +80,8 @@
                 ...
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>
