@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "mis-proyectos",
+        redirectTo: "autoevaluacion-procesos",
         pathMatch: "full"
       },
       {

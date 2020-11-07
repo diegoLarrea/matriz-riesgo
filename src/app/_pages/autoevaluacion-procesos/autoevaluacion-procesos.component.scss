@@ -1,0 +1,13 @@
+table {
+    width: inherit !important;
+}
+
+td, th {
+    width: auto;
+}
+
+td.min, 
+th.min {
+    width: 1%;
+    white-space: nowrap;
+}

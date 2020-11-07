@@ -1,1 +1,129 @@
-<p>autoevaluacion-procesos works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <button data-toggle="modal" data-target="#modalAgregar" type="button" class="btn btn-primary mb-3 mr-2">
+                <i class="fas fa-plus mr-2"></i>AGREGAR
+            </button>
+            <div class="dropdown d-inline-block" style="vertical-align: top;">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="btn-exportar"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-file-excel mr-2"></i>EXPORTAR
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btn-exportar">
+                    <a class="dropdown-item" href="#">Total</a>
+                    <a class="dropdown-item" href="#">Parcial</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar..."
+                    aria-describedby="btn-buscar">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" id="btn-buscar"><i
+                            class="fas fa-search mr-2"></i>BUSCAR</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="min" scope="col">#</th>
+                            <th class="min" scope="col">First</th>
+                            <th class="min" scope="col">Last</th>
+                            <th class="min" scope="col">Handle</th>
+                            <th class="min" scope="col">First</th>
+                            <th class="min" scope="col">Last</th>
+                            <th class="min" scope="col">Handle</th>
+                            <th class="min" scope="col">First</th>
+                            <th class="min" scope="col">Last</th>
+                            <th class="min" scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="min" scope="row">1</th>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                        </tr>
+                        <tr>
+                            <th class="min" scope="row">2</th>
+                            <td class="min">Jacob</td>
+                            <td class="min">Thornton</td>
+                            <td class="min">@fat</td>
+                            <td class="min">Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                        </tr>
+                        <tr>
+                            <th class="min" scope="row">3</th>
+                            <td class="min">Larry</td>
+                            <td class="min">the Bird</td>
+                            <td class="min">@twitter</td>
+                            <td class="min">Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                            <td class="min">Mark Mark  Mark  Mark  Mark</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-12">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+<!--         <div class="col-2">
+            <div class="input-group">
+                <select class="custom-select">
+                  <option selected>10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarLabel">Agregar Autoevaluación de Procesos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

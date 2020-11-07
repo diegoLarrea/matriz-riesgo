@@ -2,3 +2,8 @@
 p, a, h1, h2, h3, h4, h5, h6, label {
     font-family: 'Montserrat', sans-serif;
 }
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 3px solid #2780e3!important;
+}
