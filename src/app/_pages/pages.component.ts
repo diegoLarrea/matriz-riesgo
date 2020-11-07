@@ -9,6 +9,8 @@ export class PagesComponent implements OnInit {
 
   constructor() { }
 
+  user = JSON.parse(localStorage.getItem("currentUser"));
+  
   ngOnInit(): void {
   }
 

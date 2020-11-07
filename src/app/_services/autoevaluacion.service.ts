@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import { Host } from './host';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,6 @@ export class AutoevaluacionAPI {
 
   constructor(private http: HttpClient) { }
 
-  host = location.protocol == 'https:' ? "https://seguridad.personal.com.py/rLite5":"http://seguridad.personal.com.py/rLite5";
   get(params):Observable<any>{
       
     const perPage = params.can;
@@ -29,18 +29,18 @@ export class AutoevaluacionAPI {
       httpParams = httpParams.append("whereX", filters);
     }
   
-    return this.http.get(`${this.host}/v_legajo_rrhh/listar`, {params: httpParams});
+    return this.http.get(`${Host.HOST}/v_legajo_rrhh/listar`, {params: httpParams});
   }
 
   post(autoevaluacion: any):Observable<any> {
-    return this.http.post<any>(`${this.host}/autoevaluacion_procesos/crear`, autoevaluacion);
+    return this.http.post<any>(`${Host.HOST}/autoevaluacion_procesos/crear`, autoevaluacion);
   }
 
   put(autoevaluacion: any):Observable<any> {
-    return this.http.put<any>(`${this.host}/autoevaluacion_procesos/modificar/${autoevaluacion.id}`, autoevaluacion);
+    return this.http.put<any>(`${Host.HOST}/autoevaluacion_procesos/modificar/${autoevaluacion.id}`, autoevaluacion);
   }
 
   getById(id):Observable<any> {
-    return this.http.get(`${this.host}/autoevaluacion_procesos/listar/${id}`);
+    return this.http.get(`${Host.HOST}/autoevaluacion_procesos/listar/${id}`);
   }
 }
