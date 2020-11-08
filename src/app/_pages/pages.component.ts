@@ -43,7 +43,7 @@ export class PagesComponent implements OnInit {
     },
     {
       nombre: "Riesgos",
-      icon: "fas fa-exclamation mr-2",
+      icon: "fas fa-exclamation-circle mr-2",
       route: 'riesgos'
     }
   ]
