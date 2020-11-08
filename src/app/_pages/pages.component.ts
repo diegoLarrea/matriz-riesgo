@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthAPI } from '../_services/auth';
 import { SPINNER } from 'ngx-ui-loader';
+import { AuthAPI } from 'src/_services/auth';
 
 @Component({
   selector: 'app-pages',
@@ -45,16 +45,6 @@ export class PagesComponent implements OnInit {
       nombre: "Riesgos",
       icon: "fas fa-exclamation mr-2",
       route: 'riesgos'
-    },
-    {
-      nombre: "Prob. de ocurrencia",
-      icon: "fas fa-clipboard-list mr-2",
-      route: 'probabilidad-ocurrencia'
-    },
-    {
-      nombre: "Impacto",
-      icon: "fas fa-list-ul mr-2",
-      route: 'impacto'
     }
   ]
 }

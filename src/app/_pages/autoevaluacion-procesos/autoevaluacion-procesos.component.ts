@@ -4,7 +4,6 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Autoevaluacion } from 'src/_models/autoevaluacion';
 import { AutoevaluacionAPI } from 'src/_services/autoevaluacion.service';
 import { TableMaganer } from 'src/_utils/table';
-import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
 
 @Component({

@@ -2,13 +2,6 @@
     <div class="col-12">
         <h4 class="text-primary font-weight-bold">PÁGINA PRINCIPAL</h4>
     </div>
-    <!-- <div class="col-12">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-home"></i></li>
-            </ol>
-        </nav>
-    </div> -->
     <div class="col-12">
         <button data-toggle="modal" data-target="#modalAgregar" type="button" class="btn btn-primary mb-3 mr-2">
             <i class="fas fa-plus mr-2"></i>AGREGAR
@@ -42,7 +35,7 @@
                     <tr>
                         <th *ngFor="let i of tableManager.headers; index as j" class="min"
                             (click)="sort(i.sortable, j)" [class.text-center]="i.center" [class.cp]="i.sortable">
-                            <span class="platform-light text-primary">{{i.columnName}}</span>
+                            <span class="text-primary">{{i.columnName}}</span>
                             <span class="ml-2">
                                 <i *ngIf="i.sortable" class="fas fa-long-arrow-alt-up {{i.sort && i.dir=='ASC'?'text-primary':'text-gris'}}"></i>
                                 <i *ngIf="i.sortable" class="fas fa-long-arrow-alt-down {{i.sort && i.dir=='DESC'?'text-primary':'text-gris'}}"></i>

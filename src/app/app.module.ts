@@ -7,10 +7,10 @@ import { LoginComponent } from './login/login.component';
 import { PagesModule } from './_pages/pages.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { AuthInterceptorService } from './_services/auth-interceptor';
 import { DatePipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthInterceptorService } from 'src/_services/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({timeOut: 3000}),
     AppRoutingModule
   ],
   providers: [

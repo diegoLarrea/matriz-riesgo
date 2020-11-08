@@ -7,7 +7,7 @@ p, a, h1, h2, h3, h4, h5, h6, label, .m, th, td {
 
 .table thead th {
     vertical-align: bottom;
-    border-bottom: 3px solid #2780e3!important;
+    border-bottom: 3px solid #2780e3 !important;
 }
 
 .cp {
@@ -16,4 +16,17 @@ p, a, h1, h2, h3, h4, h5, h6, label, .m, th, td {
 
 .text-gris {
     color: #dee2e6;
+}
+
+label {
+    color: #2780e3 !important;
+}
+
+label span {
+    color: #ff0039 !important;
+}
+
+.dis {
+    opacity: 0.75;
+    pointer-events: none;
 }

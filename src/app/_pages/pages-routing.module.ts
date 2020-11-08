@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AutoevaluacionProcesosComponent } from './autoevaluacion-procesos/autoevaluacion-procesos.component';
-import { ImpactoComponent } from './impacto/impacto.component';
 import { MacroprocesosComponent } from './macroprocesos/macroprocesos.component';
 import { PagesComponent } from './pages.component';
-import { ProbabilidadOcurrenciaComponent } from './probabilidad-ocurrencia/probabilidad-ocurrencia.component';
 import { ProcesosComponent } from './procesos/procesos.component';
 import { RiesgosComponent } from './riesgos/riesgos.component';
 import { 
   AuthGuardService as AuthGuard 
-} from 'src/app/_services/auth-guard';
+} from 'src/_services/auth-guard';
 
 const routes: Routes = [
   {
@@ -35,16 +33,8 @@ const routes: Routes = [
         component: ProcesosComponent
       },
       {
-        path: "probabilidad-ocurrencia",
-        component: ProbabilidadOcurrenciaComponent
-      },
-      {
         path: "riesgos",
         component: RiesgosComponent
-      },
-      {
-        path: "impacto",
-        component: ImpactoComponent
       }
     ]
   }
