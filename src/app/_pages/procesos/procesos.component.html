@@ -20,7 +20,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="icon-b-p"><i class="fas fa-search"></i></span>
             </div>
-            <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar...font-weight-light" aria-describedby="icon-b-p">
+            <input [(ngModel)]="searchText" name="searchText" type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar...font-weight-light" aria-describedby="icon-b-p">
         </div>
     </div>
     <div class="col-12">
@@ -33,7 +33,7 @@
                 </thead>
                 <tbody>
                     <tr
-                        *ngFor="let i of datos | paginate: { id: 'server', itemsPerPage: 10, currentPage: p }; index as j;">
+                        *ngFor="let i of datos| procesoPipe:searchText | paginate: { id: 'server', itemsPerPage: 10, currentPage: p }; index as j;">
                         <td class="min text-center">{{i.id != null? i.id: "NR"}}</td>
                         <td class="min">{{i.nombre != null? i.nombre: "NR"}}</td>
                         <td class="min">{{i.descripcion != null? i.descripcion: "NR"}}</td>

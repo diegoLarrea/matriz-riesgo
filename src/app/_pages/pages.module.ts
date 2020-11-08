@@ -10,13 +10,19 @@ import { FormsModule } from '@angular/forms';
 import { MacroprocesosComponent } from './macroprocesos/macroprocesos.component';
 import { ProcesosComponent } from './procesos/procesos.component';
 import { RiesgosComponent } from './riesgos/riesgos.component';
+import { ProcesoPipe } from './procesos/procesos.pipe';
+import { RiesgosPipe } from './riesgos/riesgos.pipe';
+import { MacroprocesoPipe } from './macroprocesos/macroprocesos.pipe';
 
 @NgModule({
   declarations: [PagesComponent,
     AutoevaluacionProcesosComponent,
     MacroprocesosComponent,
     ProcesosComponent,
-    RiesgosComponent
+    RiesgosComponent,
+    RiesgosPipe,
+    ProcesoPipe,
+    MacroprocesoPipe
   ],
   imports: [
     CommonModule,
@@ -27,7 +33,10 @@ import { RiesgosComponent } from './riesgos/riesgos.component';
     PagesRoutingModule
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    RiesgosPipe,
+    ProcesoPipe,
+    MacroprocesoPipe
   ]
 })
 export class PagesModule { }

@@ -45,6 +45,7 @@ export class MacroprocesosComponent implements OnInit {
   datos: Macroproceso[] = [];
   loading = true;
   p: number = 1;
+  searchText = null;
   user = JSON.parse(localStorage.getItem("currentUser"));
 
   ngOnInit(): void {

@@ -50,6 +50,7 @@ export class ProcesosComponent implements OnInit {
   datos: ViewProceso[] = [];
   loading = true;
   p: number = 1;
+  searchText = null;
   user = JSON.parse(localStorage.getItem("currentUser"));
 
   ngOnInit(): void {
