@@ -80,8 +80,8 @@ export class RiesgosComponent implements OnInit {
   riesgoAdd: Riesgo = new Riesgo();
   loadingAdd = false;
   post(){
-    this.loadingAdd = true;
     if(this.riesgoAdd.nombre != null && this.riesgoAdd.nombre != ""){
+      this.loadingAdd = true;
       this.riesgoAdd.usuario_creacion = this.user["cn"][0];
       this.riesgoAdd.usuario_modificacion = this.user["cn"][0];
       this.apiRiesgo.post(this.riesgoAdd).subscribe(
@@ -108,8 +108,8 @@ export class RiesgosComponent implements OnInit {
   }
 
   put(){
-    this.loadingEdit = true;
     if(this.riesgoEdit.nombre != null && this.riesgoEdit.nombre != ""){
+      this.loadingEdit = true;
       this.riesgoEdit.usuario_modificacion = this.user["cn"][0];
       delete this.riesgoEdit.fecha_modificacion;
       delete this.riesgoEdit.fecha_creacion;

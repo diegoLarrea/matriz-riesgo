@@ -1,0 +1,23 @@
+table {
+  width: inherit !important;
+}
+
+td,
+th {
+  width: auto;
+}
+
+td.min,
+th.min {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.my-pagination::ng-deep .ngx-pagination {
+  font-family: "Montserrat", sans-serif;
+  padding-left: 0 !important;
+}
+
+.my-pagination::ng-deep .ngx-pagination .current {
+  background: #2780e3 !important;
+}

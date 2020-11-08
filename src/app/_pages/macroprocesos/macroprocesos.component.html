@@ -5,9 +5,154 @@
     <div class="col-12">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="cp" routerLink="autoevaluacion-procesos"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a class="cp" routerLink="autoevaluacion-procesos"><i
+                            class="fas fa-home"></i></a></li>
                 <li class="breadcrumb-item active" aria-current="page">Macroprocesos</li>
             </ol>
         </nav>
+    </div>
+    <div class="col-12">
+        <button data-toggle="modal" data-target="#modalAgregarMacro" type="button" class="btn btn-primary mb-3"><i
+                class="fas fa-plus mr-2"></i>AGREGAR</button>
+    </div>
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="min text-primary" *ngFor="let i of columns">{{i.nombre}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let i of datos | paginate: { id: 'server', itemsPerPage: 10, currentPage: p }; index as j;">
+                        <td class="min text-center">{{i.id != null? i.id: "NR"}}</td>
+                        <td class="min">{{i.nombre != null? i.nombre: "NR"}}</td>
+                        <td class="min">{{i.descripcion != null? i.descripcion: "NR"}}</td>
+                        <td class="min">{{i.usuario_creacion != null? i.usuario_creacion: "NR"}}</td>
+                        <td class="min">{{i.fecha_creacion != null? i.fecha_creacion: "NR"}}</td>
+                        <td class="min">{{i.usuario_modificacion != null? i.usuario_modificacion: "NR"}}</td>
+                        <td class="min">{{i.fecha_modificacion != null? i.fecha_modificacion: "NR"}}</td>
+                        <td class="min text-center">
+                            <a (click)="openPut(i)" data-toggle="modal" data-target="#modalEditarMacro" class="cp"><i
+                                    class="fas fa-edit text-warning mr-2 fa-lg"></i></a>
+                            <a (click)="openDelete(i)" data-toggle="modal" data-target="#modalEliminarMacro" class="cp"><i
+                                    class="fas fa-trash-alt text-danger fa-lg"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-center text-black-50" *ngIf="datos.length == 0 && !loading">No se encontraron resultados
+        </p>
+        <pagination-controls class="my-pagination text-center" id="server" (pageChange)="p=$event" maxSize="10"
+            previousLabel="" nextLabel="">
+        </pagination-controls>
+    </div>
+</div>
+
+<!-- Modal ADD -->
+<div class="modal fade" id="modalAgregarMacro" tabindex="-1" aria-labelledby="modalAgregarMacroLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarMacroLabel">Agregar Macroproceso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <label for="">Nombre <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <input [(ngModel)]="macroAdd.nombre" name="nombre" type="text" class="form-control"
+                                placeholder="Nombre...">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="">Descripción</label>
+                        <div class="input-group mb-3">
+                            <textarea [(ngModel)]="macroAdd.descripcion" name="descripcion" class="form-control"
+                                aria-label="Descripcion..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button [class.dis]="loadingAdd" (click)="post()" type="button" class="btn btn-primary">
+                    <i class="fas fa-circle-notch fa-spin mr-2" *ngIf="loadingAdd"></i>Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal EDIT -->
+<div class="modal fade" id="modalEditarMacro" tabindex="-1" aria-labelledby="modalEditarMacroLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarMacroLabel">Editar Macroproceso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <label for="">Nombre <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <input [(ngModel)]="macroEdit.nombre" name="nombre" type="text" class="form-control"
+                                placeholder="Nombre...">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="">Descripción</label>
+                        <div class="input-group mb-3">
+                            <textarea [(ngModel)]="macroEdit.descripcion" name="descripcion" class="form-control"
+                                aria-label="Descripcion..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button [class.dis]="loadingEdit" (click)="put()" type="button" class="btn btn-primary">
+                    <i class="fas fa-circle-notch fa-spin mr-2" *ngIf="loadingEdit"></i>Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal DELETE -->
+<div class="modal fade" id="modalEliminarMacro" tabindex="-1" aria-labelledby="modalEliminarMacroLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarMacroLabel">Eliminar Macroproceso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <p class="text-danger">¿Desea eliminar el registro?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button [class.dis]="loadingDelete" (click)="delete()" type="button" class="btn btn-danger">
+                    <i class="fas fa-circle-notch fa-spin mr-2" *ngIf="loadingDelete"></i>Eliminar
+                </button>
+            </div>
+        </div>
     </div>
 </div>

@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~ngx-toastr/toastr';
+$ng-select-highlight: #2780e3 !default;
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 
 p, a, h1, h2, h3, h4, h5, h6, label, .m, th, td {
     font-family: 'Montserrat', sans-serif;

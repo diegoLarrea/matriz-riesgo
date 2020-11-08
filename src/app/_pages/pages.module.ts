@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { PagesRoutingModule } from './pages-routing.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { PagesComponent } from './pages.component';
 import { AutoevaluacionProcesosComponent } from './autoevaluacion-procesos/autoevaluacion-procesos.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
@@ -21,6 +22,7 @@ import { RiesgosComponent } from './riesgos/riesgos.component';
     CommonModule,
     NgxUiLoaderModule,
     NgxPaginationModule,
+    NgSelectModule,
     FormsModule,
     PagesRoutingModule
   ],
