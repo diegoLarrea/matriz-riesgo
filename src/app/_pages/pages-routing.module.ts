@@ -7,11 +7,15 @@ import { PagesComponent } from './pages.component';
 import { ProbabilidadOcurrenciaComponent } from './probabilidad-ocurrencia/probabilidad-ocurrencia.component';
 import { ProcesosComponent } from './procesos/procesos.component';
 import { RiesgosComponent } from './riesgos/riesgos.component';
+import { 
+  AuthGuardService as AuthGuard 
+} from 'src/app/_services/auth-guard';
 
 const routes: Routes = [
   {
     path: "",
     component: PagesComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: "",

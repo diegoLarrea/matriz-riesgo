@@ -23,7 +23,7 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot({positionClass: 'toast-bottom-right'}),
+    ToastrModule.forRoot(),
     AppRoutingModule
   ],
   providers: [

@@ -38,12 +38,12 @@ export class LoginComponent implements OnInit {
             )
           }else{
             this.loading = false;
-            this.toast.info("Usuario y/o contraseña incorrecta/s");
+            this.toast.error("Usuario y/o contraseña incorrecta/s");
           }
         }
       )
     }else{
-      this.toast.info("Complete los campos requeridos");
+      this.toast.error("Complete los campos requeridos");
     }
     
   }
