@@ -167,27 +167,25 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <h6 class="text-primary font-weight-bolder">CAMPOS PERSONALIZADOS</h6> <button class="btn btn-sm btn-secondary d-inline-block"><i class="fas fa-plus"></i></button>
+                        <h6 class="text-primary font-weight-bolder">CAMPOS PERSONALIZADOS <button (click)="addCampoPost()" class="btn btn-sm btn-secondary"><i class="fas fa-plus"></i></button></h6> 
                         <hr>
                     </div>
                     <div class="col-12">
-                        <div class="input-group mb-3">
-                            <input type="text" aria-label="Nombre" placeholder="Nombre" class="form-control w-25">
-                            <select class="custom-select w-25">
-                                <option value="1">Texto</option>
-                                <option value="2">Número</option>
-                                <option value="3">Fecha</option>
-                                <option value="4">Archivo</option>
-                            </select>
-                            <input type="text" aria-label="Valor" placeholder="Valor" class="form-control w-50">
-                            <input type="file" class="d-none">
+                        <div class="input-group mb-3" *ngFor="let i of apAdd.camposPersonalizados; index as j;">
+                            <input [(ngModel)]="i.nombre" type="text" aria-label="Nombre" placeholder="Nombre" class="form-control">
+                            <input [(ngModel)]="i.valor" type="text" aria-label="Valor" placeholder="Valor" class="form-control">
+                            <div class="input-group-append">
+                                <button (click)="apAdd.camposPersonalizados.splice(j,1)" class="btn btn-outline-secondary" type="button"><i class="fas fa-trash-alt"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button [class.dis]="loadingAdd" (click)="post()" type="button" class="btn btn-primary">
+                    <i class="fas fa-circle-notch fa-spin mr-2" *ngIf="loadingAdd"></i>Guardar
+                </button>
             </div>
         </div>
     </div>

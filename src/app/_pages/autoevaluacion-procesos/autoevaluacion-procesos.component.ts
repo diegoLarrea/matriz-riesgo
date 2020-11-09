@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { Autoevaluacion, ViewAutoevaluacion } from 'src/_models/autoevaluacion';
+import { Autoevaluacion, Campo, ViewAutoevaluacion } from 'src/_models/autoevaluacion';
 import { AutoevaluacionAPI } from 'src/_services/autoevaluacion.service';
 import { TableMaganer } from 'src/_utils/table';
 import { DatePipe } from '@angular/common';
@@ -11,6 +11,7 @@ import { RiesgoAPI } from 'src/_services/riesgo.service';
 import { Riesgo } from 'src/_models/riesgo';
 import { ViewProceso } from 'src/_models/proceso';
 
+declare var $:any;
 @Component({
   selector: 'app-autoevaluacion-procesos',
   templateUrl: './autoevaluacion-procesos.component.html',
@@ -43,6 +44,7 @@ export class AutoevaluacionProcesosComponent implements OnInit {
     ];
     this.tableManager.init(this.headers, 13, "DESC");
   }
+  user = JSON.parse(localStorage.getItem("currentUser"));
 
   headers = null;
   tableManager = new TableMaganer();
@@ -87,6 +89,7 @@ export class AutoevaluacionProcesosComponent implements OnInit {
   }
   ngOnInit(): void {
     this.get(1);
+    this.apAdd.camposPersonalizados = [];
   }
 
   limpiarFiltros() {
@@ -137,6 +140,7 @@ export class AutoevaluacionProcesosComponent implements OnInit {
 
   // ADD
   apAdd: Autoevaluacion = new Autoevaluacion();
+  loadingAdd = false;
   riesgos: Riesgo[] = [];
   procesos: ViewProceso[] = [];
   loadingRiesgos = false;
@@ -180,5 +184,39 @@ export class AutoevaluacionProcesosComponent implements OnInit {
     && target.probabilidadOcurrencia != null 
     && target.implicacionRiesgo != null && target.implicacionRiesgo != ""
     && target.descripcion != null && target.descripcion != "";
+  }
+
+  addCampoPost(){
+    let add = true;
+    for(let i=0; i<this.apAdd.camposPersonalizados.length;i++){
+      if(this.apAdd.camposPersonalizados[i].nombre == null || this.apAdd.camposPersonalizados[i].valor == null){
+        add = false;
+      }
+    }
+    if(add)this.apAdd.camposPersonalizados.push(new Campo());
+  }
+
+  post(){
+    if(this.check(this.apAdd)){
+      let obj = Object.assign({}, this.apAdd);
+      if(obj.camposPersonalizados.length > 0){
+        obj.camposPersonalizados = JSON.stringify(obj.camposPersonalizados);
+      }
+      this.loadingAdd = true;
+      obj.usuario_creacion = this.user["cn"][0];
+      obj.usuario_modificacion = this.user["cn"][0];
+      this.apiAutoevaluacion.post(obj).subscribe(
+        data => {
+          this.loadingAdd = false;
+          this.get(1);
+          this.apAdd = new Autoevaluacion();
+          this.apAdd.camposPersonalizados = [];
+          $("#modalAgregar").modal("hide");
+          this.toast.success("Autoevaluación de procesos agregada");
+        }
+      )
+    }else{
+      this.toast.error("Complete los campos obligatorios");
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SPINNER } from 'ngx-ui-loader';
+import { NgxUiLoaderService, SPINNER } from 'ngx-ui-loader';
 import { AuthAPI } from 'src/_services/auth';
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthAPI } from 'src/_services/auth';
 })
 export class PagesComponent implements OnInit {
 
-  constructor(private apiAuth: AuthAPI, private router: Router) { }
+  constructor(private apiAuth: AuthAPI, private router: Router, private ngxService: NgxUiLoaderService) { }
 
   user = JSON.parse(localStorage.getItem("currentUser"));
   SPINNER = SPINNER;  
@@ -18,9 +18,11 @@ export class PagesComponent implements OnInit {
   }
 
   logout(){
+    this.ngxService.start();
     this.apiAuth.logout().subscribe(
       data => {
-        this.router.navigateByUrl('/login')
+        this.ngxService.stop();
+        this.router.navigateByUrl('/login');
       }
     )
   }

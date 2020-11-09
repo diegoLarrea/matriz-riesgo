@@ -1,6 +1,5 @@
 export class Campo {
     nombre: string = null;
-    tipo: string = null;
     valor: string = null;
 }
 export class Autoevaluacion {
