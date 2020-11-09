@@ -24,22 +24,33 @@ export class AutoevaluacionAPI {
 
     if(params.filters?.buscar != null){
       let value = params.filters.buscar;
-      let filters = `id like '%${value}%' OR usuario like '%${value}%' OR fecha_creacion like '%${value}%' OR macroProceso like '%${value}%' OR proceso like '%${value}%' OR riesgo like '%${value}%' OR implicacionRiesgo like '%${value}%' OR probabilidadOcurrencia like '%${value}%' OR impacto like '%${value}%' OR  descripcion like '%${value}%' OR  mejora like '%${value}%' OR  camposPersonalizados like '%${value}%'`;
+      let filters = `id like '%${value}%' 
+      OR usuario like '%${value}%' 
+      OR procesoNombre like '%${value}%' 
+      OR riesgoNombre like '%${value}%' 
+      OR macroprocesoNombre like '%${value}%' 
+      OR riesgoNombre like '%${value}%' 
+      OR implicacionRiesgo like '%${value}%' 
+      OR probabilidadOcurrencia like '%${value}%' 
+      OR impacto like '%${value}%' 
+      OR  descripcion like '%${value}%' 
+      OR  mejora like '%${value}%' 
+      OR  camposPersonalizados like '%${value}%'`;
       httpParams = httpParams.append("whereX", filters);
     }
   
-    return this.http.get(`${Host.HOST}/autoevaluacion_procesos/listar`, {params: httpParams});
+    return this.http.get(`${Host.HOST}/v_ap/listar`, {params: httpParams});
   }
 
   post(autoevaluacion: any):Observable<any> {
-    return this.http.post<any>(`${Host.HOST}/autoevaluacion_procesos/crear`, autoevaluacion);
+    return this.http.post<any>(`${Host.HOST}/ap/crear`, autoevaluacion);
   }
 
   put(autoevaluacion: any):Observable<any> {
-    return this.http.put<any>(`${Host.HOST}/autoevaluacion_procesos/modificar/${autoevaluacion.id}`, autoevaluacion);
+    return this.http.put<any>(`${Host.HOST}/ap/modificar/${autoevaluacion.id}`, autoevaluacion);
   }
 
   getById(id):Observable<any> {
-    return this.http.get(`${Host.HOST}/autoevaluacion_procesos/listar/${id}`);
+    return this.http.get(`${Host.HOST}/ap/listar/${id}`);
   }
 }

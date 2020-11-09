@@ -19,7 +19,7 @@
                                 </div>
                               </div>
                               <div class="col-12">
-                                    <button [class.btn-disabled]="loading" (click)="login()" class="btn btn-sm btn-block btn-primary m">
+                                    <button [class.dis]="loading" (click)="login()" class="btn btn-sm btn-block btn-primary m">
                                       <span [hidden]="loading">INGRESAR</span>
                                       <span [hidden]="!loading"><i class="fas fa-circle-notch fa-spin"></i></span>
                                     </button>

@@ -3,11 +3,11 @@
         <h4 class="text-primary font-weight-bold">PÁGINA PRINCIPAL</h4>
     </div>
     <div class="col-12">
-        <button data-toggle="modal" data-target="#modalAgregar" type="button" class="btn btn-primary mb-3 mr-2">
+        <button (click)="getProcesos();getRiesgos()" data-toggle="modal" data-target="#modalAgregar" type="button" class="btn btn-sm btn-primary mb-3 mr-2">
             <i class="fas fa-plus mr-2"></i>AGREGAR
         </button>
         <div class="dropdown d-inline-block" style="vertical-align: top;">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="btn-exportar"
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="btn-exportar"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-file-excel mr-2"></i>EXPORTAR
             </button>
@@ -46,17 +46,25 @@
                 <tbody>
                     <tr *ngFor="let i of datos | paginate: { id: 'server', itemsPerPage: tableManager.params.can, currentPage: p, totalItems:total }; index as j;">
                         <td class="min text-center">{{i.id != null? i.id: "NR"}}</td>
-                        <td class="min">{{i.fecha_creacion != null? i.fecha_creacion: "NR"}}</td>
                         <td class="min">{{i.usuario != null? i.usuario: "NR"}}</td>
-                        <td class="min">{{i.macroProceso != null? i.macroProceso: "NR"}}</td>
-                        <td class="min">{{i.proceso != null? i.proceso: "NR"}}</td>
-                        <td class="min">{{i.riesgo != null? i.riesgo: "NR"}}</td>
+                        <td class="min text-primary">{{i.macroprocesoNombre != null? i.macroprocesoNombre: "NR"}}</td>
+                        <td class="min text-primary">{{i.procesoNombre != null? i.procesoNombre: "NR"}}</td>
+                        <td class="min">{{i.riesgoNombre != null? i.riesgoNombre: "NR"}}</td>
                         <td class="min">{{i.implicacionRiesgo != null? i.implicacionRiesgo: "NR"}}</td>
                         <td class="min">{{i.probabilidadOcurrencia != null? i.probabilidadOcurrencia: "NR"}}</td>
-                        <td class="min">{{i.impacto != null? i.impacto: "NR"}}</td>
+                        <td class="min"><span *ngIf="i.impacto != null" class="{{Iparser[i.impacto]}}">{{i.impacto}}</span> {{i.impacto == null? "NR": ""}}</td>
                         <td class="min">{{i.descripcion != null? i.descripcion: "NR"}}</td>
-                        <td class="min">{{i.recomendacion != null? i.recomendacion: "NR"}}</td>
-                        <td class="min">{{i.usuario != null? i.usuario: "NR"}}</td>
+                        <td class="min">{{i.mejora != null? i.mejora: "NR"}}</td>
+                        <td class="min">{{i.usuario_creacion != null? i.usuario_creacion: "NR"}}</td>
+                        <td class="min">{{i.fecha_creacion != null? i.fecha_creacion: "NR"}}</td>
+                        <td class="min">{{i.usuario_modificacion != null? i.usuario_modificacion: "NR"}}</td>
+                        <td class="min">{{i.fecha_modificacion != null? i.fecha_modificacion: "NR"}}</td>
+                        <td class="min text-center">
+                            <a data-toggle="modal" data-target="#modalEditarProceso" class="cp"><i
+                                class="fas fa-edit text-warning mr-2 fa-lg"></i></a>
+                            <a data-toggle="modal" data-target="#modalEliminarProceso" class="cp"><i
+                                class="fas fa-trash-alt text-danger fa-lg"></i></a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -80,7 +88,83 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <label for="">Usuario <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Usuario...">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="">Proceso <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <ng-select [items]="procesos" bindValue="id" bindLabel="nombre"
+                                [clearable]="false" style="width: 100%;"
+                                [(ngModel)]="apAdd.proceso" [loading]="loadingProcesos" loadingText="Cargando..."
+                                notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [virtualScroll]="true"
+                                [hideSelected]="false" [clearSearchOnAdd]="true" [groupBy]="'macroprocesoNombre'">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="">Riesgo <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <ng-select [items]="riesgos" bindValue="id" bindLabel="nombre"
+                                [clearable]="false" style="width: 100%;"
+                                [(ngModel)]="apAdd.riesgo" [loading]="loadingRiesgos" loadingText="Cargando..."
+                                notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [virtualScroll]="true"
+                                [hideSelected]="false" [clearSearchOnAdd]="true">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="">Probabilidad de Ocurrencia <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <ng-select [items]="PO" bindValue="nombre" bindLabel="nombre"
+                                [clearable]="false" style="width: 100%;"
+                                [(ngModel)]="apAdd.probabilidadOcurrencia"
+                                notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'"
+                                [hideSelected]="false" [clearSearchOnAdd]="true">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="">Impacto <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <ng-select [items]="I" bindValue="nombre" bindLabel="nombre"
+                                [clearable]="false" style="width: 100%;"
+                                [(ngModel)]="apAdd.impacto"
+                                notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'"
+                                [hideSelected]="false" [clearSearchOnAdd]="true">
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span class="{{item.badge}}">{{item.nombre}}</span>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="">Implicación de riesgo <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <textarea [(ngModel)]="apAdd.implicacionRiesgo" name="implicacionRiesgo" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="">Descripción del control / Mitigación existente <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <textarea [(ngModel)]="apAdd.descripcion" name="descripcion" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="">Recomendación de mejora sugerida</label>
+                        <div class="input-group mb-3">
+                            <textarea [(ngModel)]="apAdd.mejora" name="mejora" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
