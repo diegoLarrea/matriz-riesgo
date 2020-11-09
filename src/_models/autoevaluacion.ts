@@ -1,3 +1,8 @@
+export class Campo {
+    nombre: string = null;
+    tipo: string = null;
+    valor: string = null;
+}
 export class Autoevaluacion {
     id: number = null;
     usuario: string = null;
@@ -8,7 +13,7 @@ export class Autoevaluacion {
     impacto: string = null;
     descripcion: string = null;
     mejora: string = null;
-    camposPersonalizados: string = null;
+    camposPersonalizados: any = null;
     fecha_creacion: string = null;
     fecha_modificacion: string = null;
     usuario_creacion: string = null;

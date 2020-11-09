@@ -171,4 +171,14 @@ export class AutoevaluacionProcesosComponent implements OnInit {
       }
     )
   }
+
+  check(target:Autoevaluacion){
+    return target.usuario != null && target.usuario != ""
+    && target.proceso != null
+    && target.riesgo != null
+    && target.impacto != null
+    && target.probabilidadOcurrencia != null 
+    && target.implicacionRiesgo != null && target.implicacionRiesgo != ""
+    && target.descripcion != null && target.descripcion != "";
+  }
 }

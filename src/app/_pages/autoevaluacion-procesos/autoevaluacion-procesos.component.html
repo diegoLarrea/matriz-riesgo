@@ -3,7 +3,8 @@
         <h4 class="text-primary font-weight-bold">PÁGINA PRINCIPAL</h4>
     </div>
     <div class="col-12">
-        <button (click)="getProcesos();getRiesgos()" data-toggle="modal" data-target="#modalAgregar" type="button" class="btn btn-sm btn-primary mb-3 mr-2">
+        <button (click)="getProcesos();getRiesgos()" data-toggle="modal" data-target="#modalAgregar" type="button"
+            class="btn btn-sm btn-primary mb-3 mr-2">
             <i class="fas fa-plus mr-2"></i>AGREGAR
         </button>
         <div class="dropdown d-inline-block" style="vertical-align: top;">
@@ -19,8 +20,8 @@
     </div>
     <div class="col-12">
         <div class="input-group mb-3">
-            <input [(ngModel)]="filtros.buscar" type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar..."
-                aria-describedby="btn-buscar">
+            <input [(ngModel)]="filtros.buscar" type="text" class="form-control" placeholder="Buscar..."
+                aria-label="Buscar..." aria-describedby="btn-buscar">
             <div class="input-group-append" id="btn-buscar">
                 <button (click)="get(1)" class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
                 <button (click)="limpiarFiltros()" class="btn btn-outline-secondary" type="button" id="btn-buscar"><i
@@ -33,18 +34,21 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th *ngFor="let i of tableManager.headers; index as j" class="min"
-                            (click)="sort(i.sortable, j)" [class.text-center]="i.center" [class.cp]="i.sortable">
+                        <th *ngFor="let i of tableManager.headers; index as j" class="min" (click)="sort(i.sortable, j)"
+                            [class.text-center]="i.center" [class.cp]="i.sortable">
                             <span class="text-primary">{{i.columnName}}</span>
                             <span class="ml-2">
-                                <i *ngIf="i.sortable" class="fas fa-long-arrow-alt-up {{i.sort && i.dir=='ASC'?'text-primary':'text-gris'}}"></i>
-                                <i *ngIf="i.sortable" class="fas fa-long-arrow-alt-down {{i.sort && i.dir=='DESC'?'text-primary':'text-gris'}}"></i>
+                                <i *ngIf="i.sortable"
+                                    class="fas fa-long-arrow-alt-up {{i.sort && i.dir=='ASC'?'text-primary':'text-gris'}}"></i>
+                                <i *ngIf="i.sortable"
+                                    class="fas fa-long-arrow-alt-down {{i.sort && i.dir=='DESC'?'text-primary':'text-gris'}}"></i>
                             </span>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let i of datos | paginate: { id: 'server', itemsPerPage: tableManager.params.can, currentPage: p, totalItems:total }; index as j;">
+                    <tr
+                        *ngFor="let i of datos | paginate: { id: 'server', itemsPerPage: tableManager.params.can, currentPage: p, totalItems:total }; index as j;">
                         <td class="min text-center">{{i.id != null? i.id: "NR"}}</td>
                         <td class="min">{{i.usuario != null? i.usuario: "NR"}}</td>
                         <td class="min text-primary">{{i.macroprocesoNombre != null? i.macroprocesoNombre: "NR"}}</td>
@@ -52,7 +56,8 @@
                         <td class="min">{{i.riesgoNombre != null? i.riesgoNombre: "NR"}}</td>
                         <td class="min">{{i.implicacionRiesgo != null? i.implicacionRiesgo: "NR"}}</td>
                         <td class="min">{{i.probabilidadOcurrencia != null? i.probabilidadOcurrencia: "NR"}}</td>
-                        <td class="min"><span *ngIf="i.impacto != null" class="{{Iparser[i.impacto]}}">{{i.impacto}}</span> {{i.impacto == null? "NR": ""}}</td>
+                        <td class="min"><span *ngIf="i.impacto != null"
+                                class="{{Iparser[i.impacto]}}">{{i.impacto}}</span> {{i.impacto == null? "NR": ""}}</td>
                         <td class="min">{{i.descripcion != null? i.descripcion: "NR"}}</td>
                         <td class="min">{{i.mejora != null? i.mejora: "NR"}}</td>
                         <td class="min">{{i.usuario_creacion != null? i.usuario_creacion: "NR"}}</td>
@@ -61,9 +66,9 @@
                         <td class="min">{{i.fecha_modificacion != null? i.fecha_modificacion: "NR"}}</td>
                         <td class="min text-center">
                             <a data-toggle="modal" data-target="#modalEditarProceso" class="cp"><i
-                                class="fas fa-edit text-warning mr-2 fa-lg"></i></a>
+                                    class="fas fa-edit text-warning mr-2 fa-lg"></i></a>
                             <a data-toggle="modal" data-target="#modalEliminarProceso" class="cp"><i
-                                class="fas fa-trash-alt text-danger fa-lg"></i></a>
+                                    class="fas fa-trash-alt text-danger fa-lg"></i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -71,15 +76,15 @@
         </div>
         <p class="text-center text-black-50" *ngIf="datos.length == 0 && !loading">No se encontraron resultados
         </p>
-        <pagination-controls class="my-pagination text-center" id="server" (pageChange)="get($event)"
-            maxSize="10" previousLabel="" nextLabel="">
+        <pagination-controls class="my-pagination text-center" id="server" (pageChange)="get($event)" maxSize="10"
+            previousLabel="" nextLabel="">
         </pagination-controls>
     </div>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalAgregarLabel">Agregar Autoevaluación de Procesos</h5>
@@ -92,41 +97,38 @@
                     <div class="col-12 col-md-4">
                         <label for="">Usuario <span>*</span></label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Usuario...">
+                            <input [(ngModel)]="apAdd.usuario" name="usuario" type="text" class="form-control"
+                                placeholder="Usuario...">
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
                         <label for="">Proceso <span>*</span></label>
                         <div class="input-group mb-3">
-                            <ng-select [items]="procesos" bindValue="id" bindLabel="nombre"
-                                [clearable]="false" style="width: 100%;"
-                                [(ngModel)]="apAdd.proceso" [loading]="loadingProcesos" loadingText="Cargando..."
-                                notFoundText="Sin resultados" clearAllText="Limpiar"
-                                [placeholder]="'Elegir...'" [virtualScroll]="true"
-                                [hideSelected]="false" [clearSearchOnAdd]="true" [groupBy]="'macroprocesoNombre'">
+                            <ng-select [items]="procesos" bindValue="id" bindLabel="nombre" [clearable]="false"
+                                style="width: 100%;" [(ngModel)]="apAdd.proceso" [loading]="loadingProcesos"
+                                loadingText="Cargando..." notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [virtualScroll]="true" [hideSelected]="false"
+                                [clearSearchOnAdd]="true" [groupBy]="'macroprocesoNombre'">
                             </ng-select>
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
                         <label for="">Riesgo <span>*</span></label>
                         <div class="input-group mb-3">
-                            <ng-select [items]="riesgos" bindValue="id" bindLabel="nombre"
-                                [clearable]="false" style="width: 100%;"
-                                [(ngModel)]="apAdd.riesgo" [loading]="loadingRiesgos" loadingText="Cargando..."
-                                notFoundText="Sin resultados" clearAllText="Limpiar"
-                                [placeholder]="'Elegir...'" [virtualScroll]="true"
-                                [hideSelected]="false" [clearSearchOnAdd]="true">
+                            <ng-select [items]="riesgos" bindValue="id" bindLabel="nombre" [clearable]="false"
+                                style="width: 100%;" [(ngModel)]="apAdd.riesgo" [loading]="loadingRiesgos"
+                                loadingText="Cargando..." notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [virtualScroll]="true" [hideSelected]="false"
+                                [clearSearchOnAdd]="true">
                             </ng-select>
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
                         <label for="">Probabilidad de Ocurrencia <span>*</span></label>
                         <div class="input-group mb-3">
-                            <ng-select [items]="PO" bindValue="nombre" bindLabel="nombre"
-                                [clearable]="false" style="width: 100%;"
-                                [(ngModel)]="apAdd.probabilidadOcurrencia"
-                                notFoundText="Sin resultados" clearAllText="Limpiar"
-                                [placeholder]="'Elegir...'"
+                            <ng-select [items]="PO" bindValue="nombre" bindLabel="nombre" [clearable]="false"
+                                style="width: 100%;" [(ngModel)]="apAdd.probabilidadOcurrencia"
+                                notFoundText="Sin resultados" clearAllText="Limpiar" [placeholder]="'Elegir...'"
                                 [hideSelected]="false" [clearSearchOnAdd]="true">
                             </ng-select>
                         </div>
@@ -134,12 +136,10 @@
                     <div class="col-12 col-md-4">
                         <label for="">Impacto <span>*</span></label>
                         <div class="input-group mb-3">
-                            <ng-select [items]="I" bindValue="nombre" bindLabel="nombre"
-                                [clearable]="false" style="width: 100%;"
-                                [(ngModel)]="apAdd.impacto"
-                                notFoundText="Sin resultados" clearAllText="Limpiar"
-                                [placeholder]="'Elegir...'"
-                                [hideSelected]="false" [clearSearchOnAdd]="true">
+                            <ng-select [items]="I" bindValue="nombre" bindLabel="nombre" [clearable]="false"
+                                style="width: 100%;" [(ngModel)]="apAdd.impacto" notFoundText="Sin resultados"
+                                clearAllText="Limpiar" [placeholder]="'Elegir...'" [hideSelected]="false"
+                                [clearSearchOnAdd]="true">
                                 <ng-template ng-option-tmp let-item="item">
                                     <span class="{{item.badge}}">{{item.nombre}}</span>
                                 </ng-template>
@@ -149,19 +149,38 @@
                     <div class="col-12">
                         <label for="">Implicación de riesgo <span>*</span></label>
                         <div class="input-group mb-3">
-                            <textarea [(ngModel)]="apAdd.implicacionRiesgo" name="implicacionRiesgo" class="form-control"></textarea>
+                            <textarea [(ngModel)]="apAdd.implicacionRiesgo" name="implicacionRiesgo"
+                                class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="col-12">
                         <label for="">Descripción del control / Mitigación existente <span>*</span></label>
                         <div class="input-group mb-3">
-                            <textarea [(ngModel)]="apAdd.descripcion" name="descripcion" class="form-control"></textarea>
+                            <textarea [(ngModel)]="apAdd.descripcion" name="descripcion"
+                                class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="col-12">
                         <label for="">Recomendación de mejora sugerida</label>
                         <div class="input-group mb-3">
                             <textarea [(ngModel)]="apAdd.mejora" name="mejora" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <h6 class="text-primary font-weight-bolder">CAMPOS PERSONALIZADOS</h6> <button class="btn btn-sm btn-secondary d-inline-block"><i class="fas fa-plus"></i></button>
+                        <hr>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group mb-3">
+                            <input type="text" aria-label="Nombre" placeholder="Nombre" class="form-control w-25">
+                            <select class="custom-select w-25">
+                                <option value="1">Texto</option>
+                                <option value="2">Número</option>
+                                <option value="3">Fecha</option>
+                                <option value="4">Archivo</option>
+                            </select>
+                            <input type="text" aria-label="Valor" placeholder="Valor" class="form-control w-50">
+                            <input type="file" class="d-none">
                         </div>
                     </div>
                 </div>
