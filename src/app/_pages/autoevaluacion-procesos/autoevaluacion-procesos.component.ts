@@ -99,6 +99,11 @@ export class AutoevaluacionProcesosComponent implements OnInit {
     "Puede ocurrir":"badge badge-warning",
     "Muy frecuente":"badge badge-danger"
   }
+  badgeParser = {
+    "B":"badge badge-success",
+    "M":"badge badge-warning",
+    "A":"badge badge-danger",
+  }
   ngOnInit(): void {
     this.get(1);
     this.apAdd.camposPersonalizados = [];
@@ -238,10 +243,10 @@ export class AutoevaluacionProcesosComponent implements OnInit {
   }
 
   changeImpactoAdd(e){
-    this.apAdd.impactoDescripcion = e.descripcion;
+    // this.apAdd.impactoDescripcion = e.descripcion;
   }
 
   changeProbOcurrenciaAdd(e){
-    this.apAdd.probabilidadOcurrenciaDescripcion = e.descripcion;
+    // this.apAdd.probabilidadOcurrenciaDescripcion = e.descripcion;
   }
 }

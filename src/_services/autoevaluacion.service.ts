@@ -24,17 +24,18 @@ export class AutoevaluacionAPI {
     if(params.filters?.buscar != null){
       let value = params.filters.buscar;
       let filters = `id like '%${value}%' 
-      OR usuario like '%${value}%' 
+      OR usuario_creacion like '%${value}%'
+      OR usuario_modificacion like '%${value}%' 
       OR procesoNombre like '%${value}%' 
       OR riesgoNombre like '%${value}%' 
       OR macroprocesoNombre like '%${value}%' 
       OR riesgoNombre like '%${value}%' 
       OR implicacionRiesgo like '%${value}%' 
-      OR probabilidadOcurrencia like '%${value}%' 
-      OR impacto like '%${value}%' 
-      OR  descripcion like '%${value}%' 
-      OR  mejora like '%${value}%' 
-      OR  camposPersonalizados like '%${value}%'`;
+      OR probabilidadOcurrenciaNombre like '%${value}%' 
+      OR impactoNombre like '%${value}%'
+      OR descripcion like '%${value}%' 
+      OR mejora like '%${value}%' 
+      OR camposPersonalizados like '%${value}%'`;
       httpParams = httpParams.append("whereX", filters);
     }
   

@@ -69,14 +69,14 @@
                         <td class="min">{{i.riesgoNombre != null? i.riesgoNombre: "NR"}}</td>
                         <td class="min">{{i.implicacionRiesgo != null? i.implicacionRiesgo: "NR"}}</td>
                         <td class="min">
-                            <span class="{{Iparser[i.probabilidadOcurrencia]}}">
-                                {{i.probabilidadOcurrencia}}
+                            <span class="{{badgeParser[i.probabilidadOcurrenciaCodigo]}}">
+                                {{i.probabilidadOcurrenciaNombre}}
                             </span> 
                         </td>
                         <td class="min">{{i.probabilidadOcurrenciaDescripcion != null? i.probabilidadOcurrenciaDescripcion: "NR"}}</td>
                         <td class="min">
-                            <span class="{{Iparser[i.impacto]}}">
-                                {{i.impacto}}
+                            <span class="{{badgeParser[i.impactoCodigo]}}">
+                                {{i.impactoNombre}}
                             </span> 
                         </td>
                         <td class="min">{{i.impactoDescripcion != null? i.impactoDescripcion: "NR"}}</td>        

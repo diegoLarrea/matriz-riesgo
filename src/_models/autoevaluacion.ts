@@ -7,10 +7,8 @@ export class Autoevaluacion {
     proceso: number = null;
     riesgo: number = null;
     implicacionRiesgo: string = null;
-    probabilidadOcurrencia: string = null;
-    probabilidadOcurrenciaDescripcion: string = null;
-    impacto: string = null;
-    impactoDescripcion: string = null;
+    probabilidadOcurrencia: number = null;
+    impacto: number = null;
     descripcion: string = null;
     mejora: string = null;
     camposPersonalizados: any = null;
@@ -24,4 +22,12 @@ export class ViewAutoevaluacion extends Autoevaluacion {
     procesoNombre: string = null;
     macroprocesoNombre: string = null;
     riesgoNombre: string = null;
+    probabilidadOcurrenciaNombre: string = null;
+    probabilidadOcurrenciaDescripcion: string = null;
+    probabilidadOcurrenciaValor: number = null;
+    probabilidadOcurrenciaCodigo: string = null;
+    impactoNombre: string = null;
+    impactoDescripcion: string = null;
+    impactoValor: number = null;
+    impactoCodigo: string = null;
 }
