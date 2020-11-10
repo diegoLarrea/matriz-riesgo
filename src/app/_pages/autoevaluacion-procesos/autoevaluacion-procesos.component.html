@@ -93,7 +93,7 @@
                                 title="Ver campos personalizados" data-toggle="modal"
                                 data-target="#verCamposPersonalizados" class="cp"><i
                                     class="fas fa-info-circle text-info mr-2 fa-lg"></i></a>
-                            <a title="Editar" data-toggle="modal" data-target="#modalEditarProceso" class="cp"><i
+                            <a (click)="openPut(i)" title="Editar" data-toggle="modal" data-target="#modalEditar" class="cp"><i
                                     class="fas fa-edit text-warning mr-2 fa-lg"></i></a>
                             <a (click)="openDelete(i)" title="Eliminar" data-toggle="modal" data-target="#modalEliminar" class="cp"><i
                                     class="fas fa-trash-alt text-danger fa-lg"></i></a>
@@ -304,6 +304,133 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button [class.dis]="loadingDelete" (click)="delete()" type="button" class="btn btn-danger">
                     <i class="fas fa-circle-notch fa-spin mr-2" *ngIf="loadingDelete"></i>Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal EDIT-->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarLabel">Editar Autoevaluación de Procesos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <label for="">Proceso <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <ng-select [items]="procesos" bindValue="id" bindLabel="nombre" [clearable]="false"
+                                style="width: 100%;" [(ngModel)]="apEdit.proceso" [loading]="loadingProcesos"
+                                loadingText="Cargando..." notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [virtualScroll]="true" [hideSelected]="false"
+                                [clearSearchOnAdd]="true" [groupBy]="'macroprocesoNombre'">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="">Riesgo <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <ng-select [items]="riesgos" bindValue="id" bindLabel="nombre" [clearable]="false"
+                                style="width: 100%;" [(ngModel)]="apEdit.riesgo" [loading]="loadingRiesgos"
+                                loadingText="Cargando..." notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [virtualScroll]="true" [hideSelected]="false"
+                                [clearSearchOnAdd]="true">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="">Probabilidad de Ocurrencia <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <ng-select [items]="pOc" bindValue="id" bindLabel="nombre" [clearable]="false"
+                                style="width: 100%;" [(ngModel)]="apEdit.probabilidadOcurrencia" [loading]="loadingPOc"
+                                loadingText="Cargando..." notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [hideSelected]="false" [clearSearchOnAdd]="true"
+                                [virtualScroll]="true">
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span class="{{badgeParser[item.codigo]}}">{{item.nombre}}</span>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>
+                                            <i class="fas fa-exclamation-circle mr-1"></i>Valor de probabilidad
+                                            {{item.valor}}
+                                        </small>
+                                    </p>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>{{item.descripcion}}</small>
+                                    </p>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="">Impacto <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <ng-select [items]="impactos" bindValue="id"
+                                bindLabel="nombre" [clearable]="false" style="width: 100%;" [(ngModel)]="apEdit.impacto"
+                                notFoundText="Sin resultados" [loading]="loadingImpactos" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [hideSelected]="false" [clearSearchOnAdd]="true"
+                                [virtualScroll]="true">
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span class="{{badgeParser[item.codigo]}}">{{item.nombre}}</span>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>
+                                            <i class="fas fa-exclamation-circle mr-1"></i>Valor de impacto
+                                            {{item.valor}}
+                                        </small>
+                                    </p>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>{{item.descripcion}}</small>
+                                    </p>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="">Implicación de riesgo <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <textarea [(ngModel)]="apEdit.implicacionRiesgo" name="implicacionRiesgo"
+                                class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="">Descripción del control / Mitigación existente <span>*</span></label>
+                        <div class="input-group mb-3">
+                            <textarea [(ngModel)]="apEdit.descripcion" name="descripcion"
+                                class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="">Recomendación de mejora sugerida</label>
+                        <div class="input-group mb-3">
+                            <textarea [(ngModel)]="apEdit.mejora" name="mejora" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <h6 class="text-primary font-weight-bolder">CAMPOS PERSONALIZADOS <button
+                                (click)="addCampoPost()" class="btn btn-sm btn-secondary"><i
+                                    class="fas fa-plus"></i></button></h6>
+                        <hr>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group mb-3" *ngFor="let i of apEdit.camposPersonalizados; index as j;">
+                            <input [(ngModel)]="i.nombre" type="text" aria-label="Nombre" placeholder="Nombre"
+                                class="form-control">
+                            <input [(ngModel)]="i.valor" type="text" aria-label="Valor" placeholder="Valor"
+                                class="form-control">
+                            <div class="input-group-append">
+                                <button (click)="apEdit.camposPersonalizados.splice(j,1)"
+                                    class="btn btn-outline-secondary" type="button"><i
+                                        class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button [class.dis]="loadingEdit" (click)="put()" type="button" class="btn btn-primary">
+                    <i class="fas fa-circle-notch fa-spin mr-2" *ngIf="loadingEdit"></i>Actualizar
                 </button>
             </div>
         </div>

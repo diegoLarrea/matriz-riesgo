@@ -236,11 +236,13 @@ export class AutoevaluacionProcesosComponent implements OnInit {
             hasData = false;
           }
         }
-        if (hasData){
+        if (hasData) {
           obj.camposPersonalizados = JSON.stringify(obj.camposPersonalizados);
-        }else{
+        } else {
           obj.camposPersonalizados = null;
         }
+      }else{
+        obj.camposPersonalizados = null;
       }
       this.loadingAdd = true;
       obj.usuario_creacion = this.user["cn"][0];
@@ -281,5 +283,80 @@ export class AutoevaluacionProcesosComponent implements OnInit {
         this.loadingDelete = false;
       }
     )
+  }
+
+  // EDIT
+  apEdit: Autoevaluacion = new Autoevaluacion();
+  loadingEdit = false;
+
+  editCampoPost() {
+    let edit = true;
+    for (let i = 0; i < this.apEdit.camposPersonalizados.length; i++) {
+      if (this.apEdit.camposPersonalizados[i].nombre == null || this.apEdit.camposPersonalizados[i].valor == null) {
+        edit = false;
+      }
+    }
+    if (edit) this.apEdit.camposPersonalizados.push(new Campo());
+  }
+
+  openPut(target) {
+    let obj:ViewAutoevaluacion = Object.assign({}, target);
+    delete obj.impactoCodigo;
+    delete obj.impactoDescripcion;
+    delete obj.impactoValor;
+    delete obj.impactoDescripcion;
+    delete obj.probabilidadOcurrenciaCodigo;
+    delete obj.probabilidadOcurrenciaDescripcion;
+    delete obj.probabilidadOcurrenciaValor;
+    delete obj.probabilidadOcurrenciaDescripcion;
+    delete obj.procesoNombre;
+    delete obj.macroprocesoNombre;
+    delete obj.riesgoNombre;
+    this.apEdit = Object.assign({}, obj);
+    if(this.apEdit.camposPersonalizados == null){
+      this.apEdit.camposPersonalizados = [];
+    }
+    this.getImpactos();
+    this.getProcesos();
+    this.getProbOcurrencia();
+    this.getRiesgos();
+  }
+
+  put() {
+    if (this.check(this.apEdit)) {
+      let obj = Object.assign({}, this.apEdit);
+      if (obj.camposPersonalizados.length > 0) {
+        let hasData = true;
+        for (let i = 0; i < this.apEdit.camposPersonalizados.length; i++) {
+          if (this.apEdit.camposPersonalizados[i].nombre == null || this.apEdit.camposPersonalizados[i].valor == null) {
+            hasData = false;
+          }
+        }
+        if (hasData) {
+          obj.camposPersonalizados = JSON.stringify(obj.camposPersonalizados);
+        } else {
+          obj.camposPersonalizados = null;
+        }
+      }else{
+        obj.camposPersonalizados = null;
+      }
+      this.loadingEdit = true;
+      obj.usuario_modificacion = this.user["cn"][0];
+      delete obj.fecha_modificacion;
+      delete obj.fecha_creacion;
+      delete obj.usuario_creacion;
+      this.apiAutoevaluacion.put(obj).subscribe(
+        data => {
+          this.loadingEdit = false;
+          this.get(1);
+          this.apEdit = new Autoevaluacion();
+          this.apEdit.camposPersonalizados = [];
+          $("#modalEditar").modal("hide");
+          this.toast.success("Autoevaluación de procesos editada");
+        }
+      )
+    } else {
+      this.toast.error("Complete los campos obligatorios");
+    }
   }
 }
