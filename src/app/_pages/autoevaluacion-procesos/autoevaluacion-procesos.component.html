@@ -3,7 +3,7 @@
         <h4 class="text-primary font-weight-bold">AUTOEVALUACIÓN DE PROCESOS</h4>
     </div>
     <div class="col-12">
-        <button (click)="getProcesos();getRiesgos()" data-toggle="modal" data-target="#modalAgregar" type="button"
+        <button (click)="openAdd()" data-toggle="modal" data-target="#modalAgregar" type="button"
             class="btn btn-sm btn-primary mb-3 mr-2">
             <i class="fas fa-plus mr-2"></i>AGREGAR
         </button>
@@ -32,14 +32,14 @@
     <div class="col-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <label class="input-group-text" for="respp">Res. por pág.</label>
+                <label class="input-group-text" for="respp">Res. por pág.</label>
             </div>
             <select (change)="itesmpp($event.target.value)" class="custom-select" id="respp">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
             </select>
         </div>
     </div>
@@ -71,15 +71,17 @@
                         <td class="min">
                             <span class="{{badgeParser[i.probabilidadOcurrenciaCodigo]}}">
                                 {{i.probabilidadOcurrenciaNombre}}
-                            </span> 
+                            </span>
                         </td>
-                        <td class="min">{{i.probabilidadOcurrenciaDescripcion != null? i.probabilidadOcurrenciaDescripcion: "NR"}}</td>
+                        <td class="min">
+                            {{i.probabilidadOcurrenciaDescripcion != null? i.probabilidadOcurrenciaDescripcion: "NR"}}
+                        </td>
                         <td class="min">
                             <span class="{{badgeParser[i.impactoCodigo]}}">
                                 {{i.impactoNombre}}
-                            </span> 
+                            </span>
                         </td>
-                        <td class="min">{{i.impactoDescripcion != null? i.impactoDescripcion: "NR"}}</td>        
+                        <td class="min">{{i.impactoDescripcion != null? i.impactoDescripcion: "NR"}}</td>
                         <td class="min">{{i.descripcion != null? i.descripcion: "NR"}}</td>
                         <td class="min">{{i.mejora != null? i.mejora: "NR"}}</td>
                         <td class="min">{{i.usuario_creacion != null? i.usuario_creacion: "NR"}}</td>
@@ -87,9 +89,13 @@
                         <td class="min">{{i.usuario_modificacion != null? i.usuario_modificacion: "NR"}}</td>
                         <td class="min">{{i.fecha_modificacion != null? i.fecha_modificacion: "NR"}}</td>
                         <td class="min text-center">
-                            <a data-toggle="modal" data-target="#modalEditarProceso" class="cp"><i
+                            <a (click)="targetVerCampos=i" *ngIf="i.camposPersonalizados != null"
+                                title="Ver campos personalizados" data-toggle="modal"
+                                data-target="#verCamposPersonalizados" class="cp"><i
+                                    class="fas fa-info-circle text-info mr-2 fa-lg"></i></a>
+                            <a title="Editar" data-toggle="modal" data-target="#modalEditarProceso" class="cp"><i
                                     class="fas fa-edit text-warning mr-2 fa-lg"></i></a>
-                            <a data-toggle="modal" data-target="#modalEliminarProceso" class="cp"><i
+                            <a (click)="openDelete(i)" title="Eliminar" data-toggle="modal" data-target="#modalEliminar" class="cp"><i
                                     class="fas fa-trash-alt text-danger fa-lg"></i></a>
                         </td>
                     </tr>
@@ -104,7 +110,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal ADD-->
 <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
@@ -116,7 +122,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-6">
                         <label for="">Proceso <span>*</span></label>
                         <div class="input-group mb-3">
                             <ng-select [items]="procesos" bindValue="id" bindLabel="nombre" [clearable]="false"
@@ -127,7 +133,7 @@
                             </ng-select>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-6">
                         <label for="">Riesgo <span>*</span></label>
                         <div class="input-group mb-3">
                             <ng-select [items]="riesgos" bindValue="id" bindLabel="nombre" [clearable]="false"
@@ -141,13 +147,20 @@
                     <div class="col-12 col-md-6">
                         <label for="">Probabilidad de Ocurrencia <span>*</span></label>
                         <div class="input-group mb-3">
-                            <ng-select (change)="changeProbOcurrenciaAdd($event)" [items]="PO" bindValue="nombre" bindLabel="nombre" [clearable]="false"
-                                style="width: 100%;" [(ngModel)]="apAdd.probabilidadOcurrencia"
-                                notFoundText="Sin resultados" clearAllText="Limpiar" [placeholder]="'Elegir...'"
-                                [hideSelected]="false" [clearSearchOnAdd]="true" [virtualScroll]="true" >
+                            <ng-select [items]="pOc" bindValue="id" bindLabel="nombre" [clearable]="false"
+                                style="width: 100%;" [(ngModel)]="apAdd.probabilidadOcurrencia" [loading]="loadingPOc"
+                                loadingText="Cargando..." notFoundText="Sin resultados" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [hideSelected]="false" [clearSearchOnAdd]="true"
+                                [virtualScroll]="true">
                                 <ng-template ng-option-tmp let-item="item">
-                                    <span class="{{item.badge}}">{{item.nombre}}</span>
-                                    <p class="text-black-50 mb-0 font-weight-bold"><small>{{item.descripcion}}</small></p>
+                                    <span class="{{badgeParser[item.codigo]}}">{{item.nombre}}</span>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>
+                                            <i class="fas fa-exclamation-circle mr-1"></i>Valor de probabilidad
+                                            {{item.valor}}
+                                        </small>
+                                    </p>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>{{item.descripcion}}</small>
+                                    </p>
                                 </ng-template>
                             </ng-select>
                         </div>
@@ -155,13 +168,20 @@
                     <div class="col-12 col-md-6">
                         <label for="">Impacto <span>*</span></label>
                         <div class="input-group mb-3">
-                            <ng-select (change)="changeImpactoAdd($event)" [items]="I" bindValue="nombre" bindLabel="nombre" [clearable]="false"
-                                style="width: 100%;" [(ngModel)]="apAdd.impacto" notFoundText="Sin resultados"
-                                clearAllText="Limpiar" [placeholder]="'Elegir...'" [hideSelected]="false"
-                                [clearSearchOnAdd]="true" [virtualScroll]="true">
+                            <ng-select [items]="impactos" bindValue="id"
+                                bindLabel="nombre" [clearable]="false" style="width: 100%;" [(ngModel)]="apAdd.impacto"
+                                notFoundText="Sin resultados" [loading]="loadingImpactos" clearAllText="Limpiar"
+                                [placeholder]="'Elegir...'" [hideSelected]="false" [clearSearchOnAdd]="true"
+                                [virtualScroll]="true">
                                 <ng-template ng-option-tmp let-item="item">
-                                    <span class="{{item.badge}}">{{item.nombre}}</span>
-                                    <p class="text-black-50 mb-0 font-weight-bold"><small>{{item.descripcion}}</small></p>
+                                    <span class="{{badgeParser[item.codigo]}}">{{item.nombre}}</span>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>
+                                            <i class="fas fa-exclamation-circle mr-1"></i>Valor de impacto
+                                            {{item.valor}}
+                                        </small>
+                                    </p>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>{{item.descripcion}}</small>
+                                    </p>
                                 </ng-template>
                             </ng-select>
                         </div>
@@ -187,15 +207,21 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <h6 class="text-primary font-weight-bolder">CAMPOS PERSONALIZADOS <button (click)="addCampoPost()" class="btn btn-sm btn-secondary"><i class="fas fa-plus"></i></button></h6> 
+                        <h6 class="text-primary font-weight-bolder">CAMPOS PERSONALIZADOS <button
+                                (click)="addCampoPost()" class="btn btn-sm btn-secondary"><i
+                                    class="fas fa-plus"></i></button></h6>
                         <hr>
                     </div>
                     <div class="col-12">
                         <div class="input-group mb-3" *ngFor="let i of apAdd.camposPersonalizados; index as j;">
-                            <input [(ngModel)]="i.nombre" type="text" aria-label="Nombre" placeholder="Nombre" class="form-control">
-                            <input [(ngModel)]="i.valor" type="text" aria-label="Valor" placeholder="Valor" class="form-control">
+                            <input [(ngModel)]="i.nombre" type="text" aria-label="Nombre" placeholder="Nombre"
+                                class="form-control">
+                            <input [(ngModel)]="i.valor" type="text" aria-label="Valor" placeholder="Valor"
+                                class="form-control">
                             <div class="input-group-append">
-                                <button (click)="apAdd.camposPersonalizados.splice(j,1)" class="btn btn-outline-secondary" type="button"><i class="fas fa-trash-alt"></i></button>
+                                <button (click)="apAdd.camposPersonalizados.splice(j,1)"
+                                    class="btn btn-outline-secondary" type="button"><i
+                                        class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
                     </div>
@@ -205,6 +231,79 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 <button [class.dis]="loadingAdd" (click)="post()" type="button" class="btn btn-primary">
                     <i class="fas fa-circle-notch fa-spin mr-2" *ngIf="loadingAdd"></i>Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal VER CAMPOS-->
+<div class="modal fade" id="verCamposPersonalizados" tabindex="-1" aria-labelledby="verCamposPersonalizadosLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="verCamposPersonalizadosLabel">Campos personalizados</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-primary font-weight-bold m" role="alert">
+                            Autoevaluación ID {{targetVerCampos.id}}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 10%;">#</th>
+                                    <th style="width: 30%;">Nombre</th>
+                                    <th style="width: 60%;">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let i of targetVerCampos.camposPersonalizados; index as j;">
+                                    <th class="text-primary font-weight-bold text-center">{{j+1}}</th>
+                                    <td>{{i.nombre}}</td>
+                                    <td>{{i.valor}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal DELETE -->
+<div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarLabel">Eliminar Autoevaluación de procesos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <p class="text-danger">¿Desea eliminar la autoevaluación de procesos?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button [class.dis]="loadingDelete" (click)="delete()" type="button" class="btn btn-danger">
+                    <i class="fas fa-circle-notch fa-spin mr-2" *ngIf="loadingDelete"></i>Eliminar
                 </button>
             </div>
         </div>

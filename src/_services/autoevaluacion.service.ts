@@ -53,4 +53,8 @@ export class AutoevaluacionAPI {
   getById(id):Observable<any> {
     return this.http.get(`${Host.HOST}/ap/listar/${id}`);
   }
+
+  delete(id):Observable<any> {
+    return this.http.delete(`${Host.HOST}/ap/listar/${id}`);
+  }
 }

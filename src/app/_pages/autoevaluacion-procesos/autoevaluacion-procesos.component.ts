@@ -9,8 +9,9 @@ import { ProcesoAPI } from 'src/_services/proceso.service';
 import { RiesgoAPI } from 'src/_services/riesgo.service';
 import { Riesgo } from 'src/_models/riesgo';
 import { ViewProceso } from 'src/_models/proceso';
+import { ConfAPI } from 'src/_services/conf.service';
 
-declare var $:any;
+declare var $: any;
 @Component({
   selector: 'app-autoevaluacion-procesos',
   templateUrl: './autoevaluacion-procesos.component.html',
@@ -18,11 +19,12 @@ declare var $:any;
 })
 export class AutoevaluacionProcesosComponent implements OnInit {
 
-  constructor(private toast: ToastrService, 
-    private ngxService: NgxUiLoaderService, 
+  constructor(private toast: ToastrService,
+    private ngxService: NgxUiLoaderService,
     private apiAutoevaluacion: AutoevaluacionAPI,
     private apiPro: ProcesoAPI,
     private apiRiesgo: RiesgoAPI,
+    private apiConf: ConfAPI,
     private dp: DatePipe) {
     this.headers = [
       { columnName: "ID", by: "id", center: true },
@@ -56,53 +58,10 @@ export class AutoevaluacionProcesosComponent implements OnInit {
   total: number = 0;
   loading = true;
 
-  PO = [
-    {
-      nombre: "Rara vez",
-      descripcion: "El evento de riesgo NO OCURRIÓ o no conoce que haya ocurrido alguna vez",
-      badge: "badge badge-success"
-    },
-    {
-      nombre: "Puede ocurrir",
-      descripcion: "El evento OCURRIÓ POR LO MENOS 1 VEZ EN LOS ÚLTIMOS 12 MESES",
-      badge: "badge badge-warning"
-    },
-    {
-      nombre: "Muy frecuente",
-      descripcion: "El evento OCURRIÓ POR LO MENOS 4 VECES EN EL ÚLTIMO MES",
-      badge: "badge badge-danger"
-    }
-
-  ]
-  I = [
-    {
-      nombre: "Leve",
-      descripcion: "El impacto del evento sería MUY PEQUEÑO SOBRE EL PROCESO",
-      badge: "badge badge-success"
-    },
-    {
-      nombre: "Moderado",
-      descripcion: "El impacto del evento AFECTARÍA EL PROCESO SIN QUE ELLO SEA CRÍTICO",
-      badge: "badge badge-warning"
-    },
-    {
-      nombre: "Muy grave",
-      descripcion: "El impacto del evento EVITARÁ LA NORMAL FLUIDEZ DEL PROCESO",
-      badge: "badge badge-danger"
-    }
-  ]
-  Iparser = {
-    "Leve":"badge badge-success",
-    "Moderado":"badge badge-warning",
-    "Muy grave":"badge badge-danger",
-    "Rara vez":"badge badge-success",
-    "Puede ocurrir":"badge badge-warning",
-    "Muy frecuente":"badge badge-danger"
-  }
   badgeParser = {
-    "B":"badge badge-success",
-    "M":"badge badge-warning",
-    "A":"badge badge-danger",
+    "B": "badge badge-success",
+    "M": "badge badge-warning",
+    "A": "badge badge-danger",
   }
   ngOnInit(): void {
     this.get(1);
@@ -141,6 +100,9 @@ export class AutoevaluacionProcesosComponent implements OnInit {
         this.datos.forEach(el => {
           el.fecha_creacion = this.dp.transform(el.fecha_creacion, 'dd/MM/yyyy HH:mm:ss', '-0600');
           el.fecha_modificacion = this.dp.transform(el.fecha_modificacion, 'dd/MM/yyyy HH:mm:ss', '-0600');
+          if (el.camposPersonalizados != null) {
+            el.camposPersonalizados = JSON.parse(el.camposPersonalizados);
+          }
         });
         this.ngxService.stop();
         this.loading = false;
@@ -156,20 +118,25 @@ export class AutoevaluacionProcesosComponent implements OnInit {
   }
 
   // PAGINATOR
-  itesmpp(e){
+  itesmpp(e) {
     this.tableManager.params.can = e;
     this.get(1);
   }
 
-  // ADD
-  apAdd: Autoevaluacion = new Autoevaluacion();
-  loadingAdd = false;
+  // VER CAMPOS PERSONALIZADOS
+  targetVerCampos: ViewAutoevaluacion = new ViewAutoevaluacion();
+
+  // GETS
   riesgos: Riesgo[] = [];
   procesos: ViewProceso[] = [];
+  impactos = [];
+  pOc = [];
   loadingRiesgos = false;
   loadingProcesos = false;
+  loadingImpactos = false;
+  loadingPOc = false;
 
-  getRiesgos(){
+  getRiesgos() {
     this.loadingRiesgos = true;
     this.apiRiesgo.get().subscribe(
       data => {
@@ -184,7 +151,7 @@ export class AutoevaluacionProcesosComponent implements OnInit {
     )
   }
 
-  getProcesos(){
+  getProcesos() {
     this.loadingProcesos = true;
     this.apiPro.get().subscribe(
       data => {
@@ -199,30 +166,81 @@ export class AutoevaluacionProcesosComponent implements OnInit {
     )
   }
 
-  check(target:Autoevaluacion){
-    return target.proceso != null
-    && target.riesgo != null
-    && target.impacto != null
-    && target.probabilidadOcurrencia != null 
-    && target.implicacionRiesgo != null && target.implicacionRiesgo != ""
-    && target.descripcion != null && target.descripcion != "";
+  getImpactos() {
+    this.loadingImpactos = true;
+    this.apiConf.getImpactos().subscribe(
+      data => {
+        if (data.dato instanceof Array) {
+          this.impactos = data.dato;
+        } else {
+          this.impactos = [];
+          this.impactos.push(data.dato);
+        }
+        this.loadingImpactos = false;
+      }
+    )
   }
 
-  addCampoPost(){
+  getProbOcurrencia() {
+    this.loadingPOc = true;
+    this.apiConf.getProbOcurrencia().subscribe(
+      data => {
+        if (data.dato instanceof Array) {
+          this.pOc = data.dato;
+        } else {
+          this.pOc = [];
+          this.pOc.push(data.dato);
+        }
+        this.loadingPOc = false;
+      }
+    )
+  }
+
+  check(target: Autoevaluacion) {
+    return target.proceso != null
+      && target.riesgo != null
+      && target.impacto != null
+      && target.probabilidadOcurrencia != null
+      && target.implicacionRiesgo != null && target.implicacionRiesgo != ""
+      && target.descripcion != null && target.descripcion != "";
+  }
+
+  // ADD
+  apAdd: Autoevaluacion = new Autoevaluacion();
+  loadingAdd = false;
+
+  addCampoPost() {
     let add = true;
-    for(let i=0; i<this.apAdd.camposPersonalizados.length;i++){
-      if(this.apAdd.camposPersonalizados[i].nombre == null || this.apAdd.camposPersonalizados[i].valor == null){
+    for (let i = 0; i < this.apAdd.camposPersonalizados.length; i++) {
+      if (this.apAdd.camposPersonalizados[i].nombre == null || this.apAdd.camposPersonalizados[i].valor == null) {
         add = false;
       }
     }
-    if(add)this.apAdd.camposPersonalizados.push(new Campo());
+    if (add) this.apAdd.camposPersonalizados.push(new Campo());
   }
 
-  post(){
-    if(this.check(this.apAdd)){
+  openAdd() {
+    this.getImpactos();
+    this.getProcesos();
+    this.getProbOcurrencia();
+    this.getRiesgos();
+  }
+
+  post() {
+    if (this.check(this.apAdd)) {
       let obj = Object.assign({}, this.apAdd);
-      if(obj.camposPersonalizados.length > 0){
-        obj.camposPersonalizados = JSON.stringify(obj.camposPersonalizados);
+      if (obj.camposPersonalizados.length > 0) {
+        let hasData = true;
+        for (let i = 0; i < this.apAdd.camposPersonalizados.length; i++) {
+          if (this.apAdd.camposPersonalizados[i].nombre == null || this.apAdd.camposPersonalizados[i].valor == null) {
+            hasData = false;
+          }
+        }
+        if (hasData){
+          obj.camposPersonalizados = JSON.stringify(obj.camposPersonalizados);
+        }else{
+          obj.camposPersonalizados = null;
+        }
       }
       this.loadingAdd = true;
       obj.usuario_creacion = this.user["cn"][0];
@@ -237,16 +255,31 @@ export class AutoevaluacionProcesosComponent implements OnInit {
           this.toast.success("Autoevaluación de procesos agregada");
         }
       )
-    }else{
+    } else {
       this.toast.error("Complete los campos obligatorios");
     }
   }
 
-  changeImpactoAdd(e){
-    // this.apAdd.impactoDescripcion = e.descripcion;
+  // DELETE
+  apDelete: ViewAutoevaluacion = new ViewAutoevaluacion();
+  loadingDelete = false;
+  openDelete(target) {
+    this.apDelete = Object.assign({}, target);
   }
 
-  changeProbOcurrenciaAdd(e){
-    // this.apAdd.probabilidadOcurrenciaDescripcion = e.descripcion;
+  delete() {
+    this.loadingDelete = true;
+    this.apiAutoevaluacion.delete(this.apDelete.id).subscribe(
+      data => {
+        this.loadingDelete = false;
+        this.get(1);
+        $("#modalEliminar").modal("hide");
+        this.toast.success("Dato eliminado");
+        this.apDelete = new ViewAutoevaluacion();
+      },
+      error => {
+        this.loadingDelete = false;
+      }
+    )
   }
 }

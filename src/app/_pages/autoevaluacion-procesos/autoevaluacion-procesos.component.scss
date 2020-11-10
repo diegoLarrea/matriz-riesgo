@@ -21,3 +21,7 @@ th.min {
 .my-pagination::ng-deep .ngx-pagination .current {
   background: #2780e3 !important;
 }
+
+ng-select::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  white-space: normal!important;
+}
