@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-12">
-        <h4 class="text-primary font-weight-bold">PÁGINA PRINCIPAL</h4>
+        <h4 class="text-primary font-weight-bold">AUTOEVALUACIÓN DE PROCESOS</h4>
     </div>
     <div class="col-12">
         <button (click)="getProcesos();getRiesgos()" data-toggle="modal" data-target="#modalAgregar" type="button"
             class="btn btn-sm btn-primary mb-3 mr-2">
             <i class="fas fa-plus mr-2"></i>AGREGAR
         </button>
-        <div class="dropdown d-inline-block" style="vertical-align: top;">
+        <!-- <div class="dropdown d-inline-block" style="vertical-align: top;">
             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="btn-exportar"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-file-excel mr-2"></i>EXPORTAR
@@ -16,9 +16,9 @@
                 <a class="dropdown-item">Total</a>
                 <a class="dropdown-item" href="#">Parcial</a>
             </div>
-        </div>
+        </div> -->
     </div>
-    <div class="col-12">
+    <div class="col-9">
         <div class="input-group mb-3">
             <input [(ngModel)]="filtros.buscar" type="text" class="form-control" placeholder="Buscar..."
                 aria-label="Buscar..." aria-describedby="btn-buscar">
@@ -27,6 +27,20 @@
                 <button (click)="limpiarFiltros()" class="btn btn-outline-secondary" type="button" id="btn-buscar"><i
                         class="fas fa-eraser"></i></button>
             </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="respp">Res. por pág.</label>
+            </div>
+            <select (change)="itesmpp($event.target.value)" class="custom-select" id="respp">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
         </div>
     </div>
     <div class="col-12">
@@ -50,14 +64,22 @@
                     <tr
                         *ngFor="let i of datos | paginate: { id: 'server', itemsPerPage: tableManager.params.can, currentPage: p, totalItems:total }; index as j;">
                         <td class="min text-center">{{i.id != null? i.id: "NR"}}</td>
-                        <td class="min">{{i.usuario != null? i.usuario: "NR"}}</td>
                         <td class="min text-primary">{{i.macroprocesoNombre != null? i.macroprocesoNombre: "NR"}}</td>
                         <td class="min text-primary">{{i.procesoNombre != null? i.procesoNombre: "NR"}}</td>
                         <td class="min">{{i.riesgoNombre != null? i.riesgoNombre: "NR"}}</td>
                         <td class="min">{{i.implicacionRiesgo != null? i.implicacionRiesgo: "NR"}}</td>
-                        <td class="min">{{i.probabilidadOcurrencia != null? i.probabilidadOcurrencia: "NR"}}</td>
-                        <td class="min"><span *ngIf="i.impacto != null"
-                                class="{{Iparser[i.impacto]}}">{{i.impacto}}</span> {{i.impacto == null? "NR": ""}}</td>
+                        <td class="min">
+                            <span class="{{Iparser[i.probabilidadOcurrencia]}}">
+                                {{i.probabilidadOcurrencia}}
+                            </span> 
+                        </td>
+                        <td class="min">{{i.probabilidadOcurrenciaDescripcion != null? i.probabilidadOcurrenciaDescripcion: "NR"}}</td>
+                        <td class="min">
+                            <span class="{{Iparser[i.impacto]}}">
+                                {{i.impacto}}
+                            </span> 
+                        </td>
+                        <td class="min">{{i.impactoDescripcion != null? i.impactoDescripcion: "NR"}}</td>        
                         <td class="min">{{i.descripcion != null? i.descripcion: "NR"}}</td>
                         <td class="min">{{i.mejora != null? i.mejora: "NR"}}</td>
                         <td class="min">{{i.usuario_creacion != null? i.usuario_creacion: "NR"}}</td>
@@ -95,13 +117,6 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12 col-md-4">
-                        <label for="">Usuario <span>*</span></label>
-                        <div class="input-group mb-3">
-                            <input [(ngModel)]="apAdd.usuario" name="usuario" type="text" class="form-control"
-                                placeholder="Usuario...">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4">
                         <label for="">Proceso <span>*</span></label>
                         <div class="input-group mb-3">
                             <ng-select [items]="procesos" bindValue="id" bindLabel="nombre" [clearable]="false"
@@ -123,25 +138,30 @@
                             </ng-select>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-6">
                         <label for="">Probabilidad de Ocurrencia <span>*</span></label>
                         <div class="input-group mb-3">
-                            <ng-select [items]="PO" bindValue="nombre" bindLabel="nombre" [clearable]="false"
+                            <ng-select (change)="changeProbOcurrenciaAdd($event)" [items]="PO" bindValue="nombre" bindLabel="nombre" [clearable]="false"
                                 style="width: 100%;" [(ngModel)]="apAdd.probabilidadOcurrencia"
                                 notFoundText="Sin resultados" clearAllText="Limpiar" [placeholder]="'Elegir...'"
-                                [hideSelected]="false" [clearSearchOnAdd]="true">
+                                [hideSelected]="false" [clearSearchOnAdd]="true" [virtualScroll]="true" >
+                                <ng-template ng-option-tmp let-item="item">
+                                    <span class="{{item.badge}}">{{item.nombre}}</span>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>{{item.descripcion}}</small></p>
+                                </ng-template>
                             </ng-select>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-6">
                         <label for="">Impacto <span>*</span></label>
                         <div class="input-group mb-3">
-                            <ng-select [items]="I" bindValue="nombre" bindLabel="nombre" [clearable]="false"
+                            <ng-select (change)="changeImpactoAdd($event)" [items]="I" bindValue="nombre" bindLabel="nombre" [clearable]="false"
                                 style="width: 100%;" [(ngModel)]="apAdd.impacto" notFoundText="Sin resultados"
                                 clearAllText="Limpiar" [placeholder]="'Elegir...'" [hideSelected]="false"
-                                [clearSearchOnAdd]="true">
+                                [clearSearchOnAdd]="true" [virtualScroll]="true">
                                 <ng-template ng-option-tmp let-item="item">
                                     <span class="{{item.badge}}">{{item.nombre}}</span>
+                                    <p class="text-black-50 mb-0 font-weight-bold"><small>{{item.descripcion}}</small></p>
                                 </ng-template>
                             </ng-select>
                         </div>

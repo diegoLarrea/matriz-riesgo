@@ -4,12 +4,13 @@ export class Campo {
 }
 export class Autoevaluacion {
     id: number = null;
-    usuario: string = null;
     proceso: number = null;
     riesgo: number = null;
     implicacionRiesgo: string = null;
     probabilidadOcurrencia: string = null;
+    probabilidadOcurrenciaDescripcion: string = null;
     impacto: string = null;
+    impactoDescripcion: string = null;
     descripcion: string = null;
     mejora: string = null;
     camposPersonalizados: any = null;

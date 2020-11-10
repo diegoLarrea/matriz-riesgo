@@ -5,7 +5,6 @@ import { Autoevaluacion, Campo, ViewAutoevaluacion } from 'src/_models/autoevalu
 import { AutoevaluacionAPI } from 'src/_services/autoevaluacion.service';
 import { TableMaganer } from 'src/_utils/table';
 import { DatePipe } from '@angular/common';
-import { MacroprocesoAPI } from 'src/_services/macroproceso.service';
 import { ProcesoAPI } from 'src/_services/proceso.service';
 import { RiesgoAPI } from 'src/_services/riesgo.service';
 import { Riesgo } from 'src/_models/riesgo';
@@ -27,13 +26,14 @@ export class AutoevaluacionProcesosComponent implements OnInit {
     private dp: DatePipe) {
     this.headers = [
       { columnName: "ID", by: "id", center: true },
-      { columnName: "Usuario", by: "usuario", center: false },
       { columnName: "Macroproceso", by: "macroprocesoNombre", center: false },
       { columnName: "Proceso", by: "procesoNombre", center: false },
       { columnName: "Riesgo", by: "riesgo", center: false },
       { columnName: "Implicación de riesgo", by: "implicacionRiesgo", center: false },
       { columnName: "Prob. de ocurrencia", by: "probabilidadOcurrencia", center: false },
+      { columnName: "Descrip. prob. de ocurrencia", by: null, center: false },
       { columnName: "Impacto", by: "impacto", center: false },
+      { columnName: "Descrip. impacto", by: null, center: false },
       { columnName: "Desc. control / Mit. existente", by: "descripcion", center: false },
       { columnName: "Rec. mejora sugerida", by: "mejora", center: false },
       { columnName: "Creado por", by: "usuario_creacion", center: false },
@@ -42,7 +42,7 @@ export class AutoevaluacionProcesosComponent implements OnInit {
       { columnName: "Modificado el", by: "fecha_modificacion", center: false },
       { columnName: "Acciones", by: null, center: false },
     ];
-    this.tableManager.init(this.headers, 13, "DESC");
+    this.tableManager.init(this.headers, 14, "DESC");
   }
   user = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -58,34 +58,46 @@ export class AutoevaluacionProcesosComponent implements OnInit {
 
   PO = [
     {
-      nombre: "Rara vez"
+      nombre: "Rara vez",
+      descripcion: "El evento de riesgo NO OCURRIÓ o no conoce que haya ocurrido alguna vez",
+      badge: "badge badge-success"
     },
     {
-      nombre: "Puede ocurrir"
+      nombre: "Puede ocurrir",
+      descripcion: "El evento OCURRIÓ POR LO MENOS 1 VEZ EN LOS ÚLTIMOS 12 MESES",
+      badge: "badge badge-warning"
     },
     {
-      nombre: "Muy frecuente"
+      nombre: "Muy frecuente",
+      descripcion: "El evento OCURRIÓ POR LO MENOS 4 VECES EN EL ÚLTIMO MES",
+      badge: "badge badge-danger"
     }
 
   ]
   I = [
     {
       nombre: "Leve",
+      descripcion: "El impacto del evento sería MUY PEQUEÑO SOBRE EL PROCESO",
       badge: "badge badge-success"
     },
     {
       nombre: "Moderado",
+      descripcion: "El impacto del evento AFECTARÍA EL PROCESO SIN QUE ELLO SEA CRÍTICO",
       badge: "badge badge-warning"
     },
     {
       nombre: "Muy grave",
+      descripcion: "El impacto del evento EVITARÁ LA NORMAL FLUIDEZ DEL PROCESO",
       badge: "badge badge-danger"
     }
   ]
   Iparser = {
     "Leve":"badge badge-success",
     "Moderado":"badge badge-warning",
-    "Muy grave":"badge badge-danger"
+    "Muy grave":"badge badge-danger",
+    "Rara vez":"badge badge-success",
+    "Puede ocurrir":"badge badge-warning",
+    "Muy frecuente":"badge badge-danger"
   }
   ngOnInit(): void {
     this.get(1);
@@ -138,6 +150,12 @@ export class AutoevaluacionProcesosComponent implements OnInit {
     }
   }
 
+  // PAGINATOR
+  itesmpp(e){
+    this.tableManager.params.can = e;
+    this.get(1);
+  }
+
   // ADD
   apAdd: Autoevaluacion = new Autoevaluacion();
   loadingAdd = false;
@@ -177,8 +195,7 @@ export class AutoevaluacionProcesosComponent implements OnInit {
   }
 
   check(target:Autoevaluacion){
-    return target.usuario != null && target.usuario != ""
-    && target.proceso != null
+    return target.proceso != null
     && target.riesgo != null
     && target.impacto != null
     && target.probabilidadOcurrencia != null 
@@ -218,5 +235,13 @@ export class AutoevaluacionProcesosComponent implements OnInit {
     }else{
       this.toast.error("Complete los campos obligatorios");
     }
+  }
+
+  changeImpactoAdd(e){
+    this.apAdd.impactoDescripcion = e.descripcion;
+  }
+
+  changeProbOcurrenciaAdd(e){
+    this.apAdd.probabilidadOcurrenciaDescripcion = e.descripcion;
   }
 }

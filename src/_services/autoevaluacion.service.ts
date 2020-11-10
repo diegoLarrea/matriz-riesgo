@@ -11,7 +11,6 @@ export class AutoevaluacionAPI {
   constructor(private http: HttpClient) { }
 
   get(params):Observable<any>{
-    console.log(params)
     const perPage = params.can;
     let offset = params.page * perPage - perPage;
     let httpParams = new HttpParams();

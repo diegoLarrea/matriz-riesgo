@@ -29,23 +29,23 @@ export class PagesComponent implements OnInit {
 
   items = [
     {
-      nombre: "Pág. Principal",
-      icon: "fas fa-home mr-2",
+      nombre: "Autoevaluación de procesos",
+      icon: "fas fa-home mr-1",
       route: ''
     },
     {
       nombre: "Macroprocesos",
-      icon: "fas fa-object-ungroup mr-2",
+      icon: "fas fa-object-ungroup mr-1",
       route: 'macroprocesos'
     },
     {
       nombre: "Procesos",
-      icon: "fas fa-object-group mr-2",
+      icon: "fas fa-object-group mr-1",
       route: 'procesos'
     },
     {
       nombre: "Riesgos",
-      icon: "fas fa-exclamation-circle mr-2",
+      icon: "fas fa-exclamation-circle mr-1",
       route: 'riesgos'
     }
   ]
